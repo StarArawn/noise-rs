@@ -1,4 +1,4 @@
-use crate::noise_fns::NoiseFn;
+use crate::{core::checkerboard::checkerboard, noise_fns::NoiseFn};
 
 /// Noise function that outputs a checkerboard pattern.
 ///
@@ -10,46 +10,33 @@ use crate::noise_fns::NoiseFn;
 /// debugging purposes.
 #[derive(Clone, Copy, Debug)]
 pub struct Checkerboard {
-    // Controls the size of the block in 2^(size).
-    size: usize,
+    /// Controls the size of the block in 2^(size).
+    size: u32,
 }
 
 impl Checkerboard {
-    const DEFAULT_SIZE: usize = 0;
-
     /// Controls the size of the block in 2^(size) units.
-    pub fn new(size: usize) -> Self {
-        Self { size: 1 << size }
+    pub fn new(size: u32) -> Self {
+        Self { size }
     }
 
-    pub fn set_size(self, size: usize) -> Self {
-        Self { size: 1 << size }
+    pub fn set_size(self, size: u32) -> Self {
+        Self { size }
     }
 
-    pub fn size(self) -> usize {
+    pub fn size(self) -> u32 {
         self.size
     }
 }
 
 impl Default for Checkerboard {
     fn default() -> Self {
-        Self {
-            size: 1 << Checkerboard::DEFAULT_SIZE,
-        }
+        Self { size: 1 }
     }
 }
 
-impl<const N: usize> NoiseFn<f64, N> for Checkerboard {
-    fn get(&self, point: [f64; N]) -> f64 {
-        let result = point
-            .iter()
-            .map(|&a| a.floor() as usize)
-            .fold(0, |a, b| (a & self.size) ^ (b & self.size));
-
-        if result > 0 {
-            -1.0
-        } else {
-            1.0
-        }
+impl<const DIM: usize> NoiseFn<f64, DIM> for Checkerboard {
+    fn get(&self, point: [f64; DIM]) -> f64 {
+        checkerboard(point, self.size as u32)
     }
 }
