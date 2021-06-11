@@ -18,7 +18,7 @@ impl<'a, T> Power<'a, T> {
 
 impl<'a, T> NoiseFn<T> for Power<'a, T>
 where
-    T: Copy,
+    T: Copy + Send + Sync,
 {
     fn get(&self, point: T) -> f64 {
         (self.source1.get(point)).powf(self.source2.get(point))

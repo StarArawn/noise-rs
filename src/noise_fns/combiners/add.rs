@@ -18,7 +18,7 @@ impl<'a, T> Add<'a, T> {
 
 impl<'a, T> NoiseFn<T> for Add<'a, T>
 where
-    T: Copy,
+    T: Copy + Send + Sync,
 {
     fn get(&self, point: T) -> f64 {
         self.source1.get(point) + self.source2.get(point)

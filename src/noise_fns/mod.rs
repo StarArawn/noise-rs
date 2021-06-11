@@ -1,11 +1,11 @@
-pub use self::cache::*;
+// pub use self::cache::*;
 pub use self::combiners::*;
 pub use self::generators::*;
 pub use self::modifiers::*;
 pub use self::selectors::*;
 pub use self::transformers::*;
 
-mod cache;
+// mod cache;
 mod combiners;
 mod generators;
 mod modifiers;
@@ -25,7 +25,7 @@ mod transformers;
 /// * Mathematically changing the output value from another noise function
 ///     in various ways.
 /// * Combining the output values from two noise functions in various ways.
-pub trait NoiseFn<T> {
+pub trait NoiseFn<T>: Send + Sync {
     fn get(&self, point: T) -> f64;
 }
 

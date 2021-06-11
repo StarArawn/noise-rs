@@ -18,7 +18,7 @@ impl<'a, T> Max<'a, T> {
 
 impl<'a, T> NoiseFn<T> for Max<'a, T>
 where
-    T: Copy,
+    T: Copy + Send + Sync,
 {
     fn get(&self, point: T) -> f64 {
         (self.source1.get(point)).max(self.source2.get(point))
